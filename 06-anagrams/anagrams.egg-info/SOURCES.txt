@@ -1,0 +1,7 @@
+setup.py
+anagrams/__init__.py
+anagrams/cli.py
+anagrams.egg-info/PKG-INFO
+anagrams.egg-info/SOURCES.txt
+anagrams.egg-info/dependency_links.txt
+anagrams.egg-info/top_level.txt
