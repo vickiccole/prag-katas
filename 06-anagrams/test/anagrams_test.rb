@@ -32,6 +32,6 @@ class AnagramsTest <  Minitest::Test
   # def test_passing_in_word_list_from_file
 
   #   word_list = "./data/master_list.txt"
-  #   find_combinations
+  #   find_combinations()
   # end
 end
