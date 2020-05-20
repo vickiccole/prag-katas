@@ -1,0 +1,28 @@
+- count number of letters in each word
+- count number of words with matching number of letters
+- find number of words with a letter a in them
+- create a key for each word
+- key is a 26 space array, one for each letter of the alphabet
+- key increases the count for each space for each matching letter. So ace is expressed as [1,0,1,0,1,0,0,0,etc]
+
+
+tests:
+
+- creates a key that will match any two words containing exactly the same characters
+- converts a list of words into a list of keys
+- creates an array containing the indexes of the matching arrays, grouped together in buckets
+        eg: if list is:
+        [sword, shoe, words, sausage, pat, tap, worsd]
+        list of keys is something like:
+        [[1,0,1],[0,1,5],[1,2,1],[0,1,0],[1,1,1]]
+        list of matches is:
+        [[0,2,6],[4,5]]
+
+        Then i can run a for loop over the array and using the original wordlist and the indexes, return
+        the matching words.
+
+
+
+
+
+
