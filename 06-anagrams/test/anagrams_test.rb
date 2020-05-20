@@ -2,33 +2,36 @@ require "test_helper"
 require_relative '../lib/anagrams.rb'
 
 class AnagramsTest <  Minitest::Test
-  def test_combinations_for_one_word
-    master_list = [ "apple", "enlist", "listen" ]
-    combinations = find_combinations(["listen"], master_list)
+  def test_excluding_words_with_no_anagrams
+    word_list = [ "pear", "apple", "enlist", "listen" ]
+    combinations = find_combinations(word_list)
     assert_equal [["enlist", "listen"]], combinations
   end
 
-  def test_combinations_for_substrings
-    master_list = ["fresher", "fresh"]
-    combinations = find_combinations(["refresher"], master_list)
+  def test_no_combinations_for_substring_case
+    word_list = ["fresher", "fresh"]
+    combinations = find_combinations(word_list)
     assert_equal [], combinations
   end
 
-  def test_combinations_for_multiple_words
+  def test_running_master_list_on_itself
     master_list = [
       "crepitus", "cuprites", "pictures", "piecrust",
       "enlist", "inlets", "listen", "silent",
       "labrador", "wallet", "cruciferus"
-    ]
+    ] 
 
-    combinations = find_combinations(["pictures", "enlist"], master_list)
-    assert_equal [
-      [ "crepitus", "cuprites", "pictures", "piecrust" ],
-      ["enlist", "inlets", "listen", "silent" ]
-    ], combinations
+    expected = [
+      ["crepitus", "cuprites", "pictures", "piecrust"],
+      ["enlist", "inlets", "listen", "silent"]
+    ] 
+
+    assert_equal expected, find_combinations(master_list)
   end
 
-  def test_passing_in_master_list_from_file
-    
-  end
+  # def test_passing_in_word_list_from_file
+
+  #   word_list = "./data/master_list.txt"
+  #   find_combinations
+  # end
 end

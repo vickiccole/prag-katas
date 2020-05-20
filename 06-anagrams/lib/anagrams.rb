@@ -1,13 +1,15 @@
-def find_combinations(query_list, master_list)
-  query_list.reduce([]) do |memo, query_word|
-    matches = master_list.select do |master_word|
-      master_word.chars.all? do |c|
-        char_occurences(c, master_word).length == char_occurences(c, query_word).length
+def find_combinations(word_list)
+  result = word_list.reduce([]) do |memo, w1|
+    combinations = word_list.select do |w2|
+      w2.chars.all? do |c|
+        char_occurences(c, w2).length == char_occurences(c, w1).length
       end
     end
 
-    matches.length > 0 ? memo << matches : memo
+    combinations.length > 0 ? memo << combinations : memo
   end
+
+  result.uniq.reject {|x| x.length <= 1}
 end
 
 private 
