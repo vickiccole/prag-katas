@@ -8,8 +8,9 @@ class AnagramsTest <  Minitest::Test
     assert_equal ["enlist"], combinations
   end
 
-  # def test_combinations_for_one_word_with_double_letter
-  #   combinations = find_combinations("apple")
-  #   assert_equal ["enlist"], combinations
-  # end
+  def test_combinations_for_substrings
+    master_list = ["fresher", "fresh"]
+    combinations = find_combinations("refresher", master_list)
+    assert_equal [], combinations
+  end
 end
