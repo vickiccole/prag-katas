@@ -1,14 +1,4 @@
-def find_combinations(word)
-  master_list = [
-    "apple",
-    "enlist",
-  ]
-
-  # "pear",
-  # "inlets",
-  # "listen",
-  # "silent"
-
+def find_combinations(word, master_list)
   master_list.select do |w|
     # return false if length doesnt match
     w.split("").all? do |c|
@@ -16,3 +6,8 @@ def find_combinations(word)
     end
   end
 end
+
+# "pear",
+# "inlets",
+# "listen",
+# "silent"
