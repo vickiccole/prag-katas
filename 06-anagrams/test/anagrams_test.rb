@@ -29,9 +29,15 @@ class AnagramsTest <  Minitest::Test
     assert_equal expected, find_combinations(master_list)
   end
 
-  # def test_passing_in_word_list_from_file
+  def test_passing_in_word_list_from_file
+    combinations = find_combinations("./data/word_list.txt")
 
-  #   word_list = "./data/master_list.txt"
-  #   find_combinations()
-  # end
+    expected = [
+      ["boaster", "boaters", "borates", "rots"], ["crepitus", "cuprites"],
+      ["enlist", "inlets", "silent"],
+      ["septa", "tepas"]
+    ] 
+
+    assert_equal expected, combinations
+  end
 end
