@@ -14,8 +14,8 @@ class AnagramsTest <  Minitest::Test
     assert_equal [], combinations
   end
 
-  def test_running_master_list_on_itself
-    master_list = [
+  def test_multiple_words
+    word_list = [
       "crepitus", "cuprites", "pictures", "piecrust",
       "enlist", "inlets", "listen", "silent",
       "labrador", "wallet", "cruciferus"
@@ -26,7 +26,7 @@ class AnagramsTest <  Minitest::Test
       ["enlist", "inlets", "listen", "silent"]
     ] 
 
-    assert_equal expected, find_combinations(master_list)
+    assert_equal expected, find_combinations(word_list)
   end
 
   def test_passing_in_word_list_from_file
