@@ -13,4 +13,4 @@ def find_anagrams(words):
     anagrams = defaultdict(list)
     for word in words:
         anagrams[''.join(sorted(word))].append(word)
-    return list(anagrams.values())
+    return list(group for group in anagrams.values() if len(group) > 1)

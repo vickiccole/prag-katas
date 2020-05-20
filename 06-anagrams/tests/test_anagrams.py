@@ -8,6 +8,7 @@ from anagrams import find_anagrams, load_wordlist
 @pytest.fixture
 def example():
     words = [
+        "aaa",
         "kinship",
         "pinkish",
         "enlist",
