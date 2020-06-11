@@ -1,5 +1,5 @@
 require "test_helper"
-require_relative '../lib/anagrams.rb'
+require_relative '../lib/06_anagrams.rb'
 
 class AnagramsTest <  Minitest::Test
   def test_excluding_words_with_no_anagrams
