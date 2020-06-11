@@ -21,4 +21,13 @@ class SortitTest < Minitest::Test
      rand(0..59).times { rack.add(daisy_may.next) }
      assert_equal rack.balls.sort, rack.balls
   end
+
+  def test_sorting_characters
+    sentence = "When not studying nuclear physics, Bambi likes to play
+beach volleyball."
+    sorter = LetterSorter.new 
+    sentence.chars.each { |letter| sorter.add(letter) }
+    expected = "aaaaabbbbcccdeeeeeghhhiiiiklllllllmnnnnooopprsssstttuuvwyyyy"
+    assert_equal expected, sorter.letters
+  end
 end
