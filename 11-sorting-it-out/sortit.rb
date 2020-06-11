@@ -1,44 +1,62 @@
 module Sortit
+  module MowSort 
+    def list 
+      raise NotImplementedError.new('Must be overriden')      
+    end
+
+    def insertion_position(item)
+      i = 0
+      while list[i] && list[i] < item
+        i += 1
+      end
+      yield i if block_given?
+      i
+    end
+  end
+
 
   class Rack
-    attr_reader :balls
+    include MowSort
 
+    
+    attr_reader :balls
+    
     def initialize
       @balls = []
     end
+    
+    def list 
+      @balls 
+    end
 
     def add(ball)
-      i = 0
-      while @balls[i] && @balls[i] < ball
-        i += 1
-      end
-      @balls.insert(i, ball)
+      @balls.insert(insertion_position(ball), ball)
     end
   end
 
   class LetterSorter
+    include MowSort
+
+    attr_reader :list
+    
     def initialize(selector = -> (*args) {true} )
-      @letters = []
+      @list = []
       @selector = selector
     end
 
     def letters 
-      @letters.reduce("") { |str, this| str + (this.value * this.count) }
+      @list.reduce("") { |str, this| str + (this.value * this.count) }
     end
     
     def add(letter)
       return unless @selector.call(letter)
       letter = Letter.new(letter.downcase)
-      
-      i = 0
-      while @letters[i] && @letters[i] < letter
-        i += 1
-      end
-
-      if @letters[i] == letter
-        @letters[i].count += 1
-      else 
-        @letters.insert(i, letter)
+      insertion_position(letter) do |pos|
+        if @list[pos] == letter
+          @list[pos].count += 1
+        else 
+          @list.insert(pos, letter)
+        end
       end
     end
 
