@@ -25,7 +25,7 @@ class SortitTest < Minitest::Test
   def test_sorting_characters
     sentence = "When not studying nuclear physics, Bambi likes to play
 beach volleyball."
-    sorter = LetterSorter.new 
+    sorter = LetterSorter.new(-> (letter) { letter =~ /[a-zA-Z]/ })
     sentence.chars.each { |letter| sorter.add(letter) }
     expected = "aaaaabbbbcccdeeeeeghhhiiiiklllllllmnnnnooopprsssstttuuvwyyyy"
     assert_equal expected, sorter.letters

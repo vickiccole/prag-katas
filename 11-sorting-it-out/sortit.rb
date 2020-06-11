@@ -14,14 +14,13 @@ class Rack
   end
 end
 
-class LowercaseAlpha 
+class Letter 
   attr_accessor :count
   attr_reader :value
 
   def initialize(value)
     @count = 1
-    @value = value.downcase
-    raise ArgumentError.new("'#{@letter}'' is not alphanumeric") unless @value =~ /[a-z]/
+    @value = value
   end
 
   def ==(other)
@@ -34,8 +33,9 @@ class LowercaseAlpha
 end
 
 class LetterSorter
-  def initialize
+  def initialize(selector = -> (*args) {true} )
     @letters = []
+    @selector = selector
   end
 
   def letters 
@@ -43,11 +43,8 @@ class LetterSorter
   end
   
   def add(letter)
-    begin
-      letter = LowercaseAlpha.new(letter)
-    rescue ArgumentError
-      return 
-    end
+    return unless @selector.call(letter)
+    letter = Letter.new(letter.downcase)
     
     i = 0
     while @letters[i] && @letters[i] < letter
