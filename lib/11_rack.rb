@@ -7,7 +7,7 @@ class Rack
 
   def add(ball)
     balls = @balls + [ball]
-    @balls = quicksort(balls)
+    @balls = selection_sort(balls)
   end
 
   private
@@ -27,5 +27,19 @@ class Rack
     else
       list
     end
+  end
+
+  def selection_sort(list)
+    (0..list.size - 1).each do |i|
+      min_val = i
+
+      (i + 1..list.size - 1).each do |n|
+        min_val = n if list[n] < list[min_val]
+      end
+
+      list[i], list[min_val] = list[min_val], list[i]
+    end
+
+    list
   end
 end
