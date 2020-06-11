@@ -4,6 +4,8 @@ require 'minitest/color'
 
 
 class SortitTest < Minitest::Test
+  include Sortit
+
   def generator(max = 59)
     balls = (0..max).to_a
     n = balls.count - 1
