@@ -1,38 +1,46 @@
-require 'checkout'
-require 'minitest/autorun'
-require 'minitest/color'
+require "checkout"
+require "minitest/autorun"
+require "minitest/color"
 
 class CheckOutTest < Minitest::Test
-  
-
   RULES = {
-    "A" => Rule.costs(10),
-    "B" => Rule.special_buy(unit_price: 40, buy: 5, pay: 75),
-    "C" => Rule.costs(30),
-    "D" => Rule.special_buy(unit_price: 40, buy: 3, pay: 100),
+    "A" => Rule.special_buy(unit_price: 50, buy: 3, pay: 130),
+    "B" => Rule.special_buy(unit_price: 30, buy: 2, pay: 45),
+    "C" => Rule.costs(20),
+    "D" => Rule.costs(15),
   }
 
   def price(items)
     co = CheckOut.new(RULES)
-    items.split('').each { |item| co.scan(item) }
+    items.split("").each { |item| co.scan(item) }
     co.total
   end
 
   def test_totals
-    assert_equal(40, price('D'))    
-    assert_equal(80, price('DD'))    
-    assert_equal(100, price('DDD'))    
-    assert_equal(140, price('DDDD'))    
-    
-    assert_equal(90, price('AAABBB'))    
-    assert_equal(105, price('AAABBBBB'))    
+    assert_equal(0, price(""))
+    assert_equal(50, price("A"))
+    assert_equal(80, price("AB"))
+    assert_equal(115, price("CDBA"))
+
+    assert_equal(100, price("AA"))
+    assert_equal(130, price("AAA"))
+    assert_equal(180, price("AAAA"))
+    assert_equal(230, price("AAAAA"))
+    assert_equal(260, price("AAAAAA"))
+
+    assert_equal(160, price("AAAB"))
+    assert_equal(175, price("AAABB"))
+    assert_equal(190, price("AAABBD"))
+    assert_equal(190, price("DABABA"))
   end
 
   def test_incremental
     co = CheckOut.new(RULES)
-    co.scan("A"); assert_equal(10, co.total)
-    co.scan("B"); assert_equal(30, co.total)
-    co.scan("C"); assert_equal(60, co.total)
-    co.scan("D"); assert_equal(100, co.total)
+    assert_equal(0, co.total)
+    co.scan("A"); assert_equal(50, co.total)
+    co.scan("B"); assert_equal(80, co.total)
+    co.scan("A"); assert_equal(130, co.total)
+    co.scan("A"); assert_equal(160, co.total)
+    co.scan("B"); assert_equal(175, co.total)
   end
 end
