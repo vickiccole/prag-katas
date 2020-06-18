@@ -3,20 +3,30 @@ require 'minitest/autorun'
 require 'minitest/color'
 
 class CheckOutTest < Minitest::Test
+  
+
   RULES = {
-    "A" => -> (num_items) { num_items * 10 },
-    "B" => -> (num_items) { num_items * 20 },
-    "C" => -> (num_items) { num_items * 30 },
-    "D" => -> (num_items) { (num_items / 3 * 100) + (num_items % 3 * 40) },
+    "A" => Rule.costs(10),
+    "B" => Rule.special_buy(unit_price: 40, buy: 5, pay: 75),
+    "C" => Rule.costs(30),
+    "D" => Rule.special_buy(unit_price: 40, buy: 3, pay: 100),
   }
 
-  def test_n_for_n
+  def price(items)
     co = CheckOut.new(RULES)
-    co.scan("D"); assert_equal 40, co.total
-    co.scan("D"); assert_equal 80, co.total
-    co.scan("D"); assert_equal 100, co.total
-    co.scan("D"); assert_equal 140, co.total
-  end 
+    items.split('').each { |item| co.scan(item) }
+    co.total
+  end
+
+  def test_totals
+    assert_equal(40, price('D'))    
+    assert_equal(80, price('DD'))    
+    assert_equal(100, price('DDD'))    
+    assert_equal(140, price('DDDD'))    
+    
+    assert_equal(90, price('AAABBB'))    
+    assert_equal(105, price('AAABBBBB'))    
+  end
 
   def test_incremental
     co = CheckOut.new(RULES)
