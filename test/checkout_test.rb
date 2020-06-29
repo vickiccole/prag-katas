@@ -1,13 +1,9 @@
 require "test_helper"
 require_relative '../lib/09_checkout.rb'
 
-# what if we add a rule where if you spend over 200 you get a discount?
-# how to make this flexible - this checkout code is super tightly coupled to one
-# type of ruleset.
-
 RULES = {
-  "A" => { :unit_price => 50.0, :multibuy_quantity => 3, :multibuy_price => 130 },
-  "B" => { :unit_price => 30.0, :multibuy_quantity => 2, :multibuy_price => 45 },
+  "A" => { :unit_price => 50.0, :discounts => [ { :type => :multibuy, :options => { :quantity => 3, :price => 130 } } ] },
+  "B" => { :unit_price => 30.0, :discounts => [ { :type => :multibuy, :options => { :quantity => 2, :price => 45 } } ] },
   "C" => { :unit_price => 20.0 },
   "D" => { :unit_price => 15.0 }
 }

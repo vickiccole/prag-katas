@@ -1,22 +1,47 @@
+class MultibuyDiscount
+  def initialize(multibuy_quantity, multibuy_price)
+    @multibuy_quantity = multibuy_quantity
+    @multibuy_price = multibuy_price
+  end
+  
+  def apply(item, count)
+    quotient, modulus = count.divmod(@multibuy_quantity)
+    (quotient * @multibuy_price) + (modulus * item.unit_price)
+  end
+end
+
+class KeyWorkerDiscount
+  def initialize
+  end
+
+  def apply(item)
+  end
+end
+
+class Discount
+  # { :type => :multibuy, :options => { :quantity => 3, :price => 130 } }
+  def self.for(discount)
+    type, options = discount.values_at(:type, :options)
+    case type
+    when :multibuy
+      MultibuyDiscount.new(options[:quantity], options[:price])
+    else
+      raise 'Unsupported discount type'
+    end
+  end
+end
+
 class CheckoutItem
-  def initialize(rules)
-    @rules = rules
+  attr_reader :sku, :unit_price
+
+  def initialize(sku, unit_price, discounts)
+    @sku = sku
+    @unit_price = unit_price
+    @discounts = discounts
   end
 
-  def multibuy_price
-    @rules[:multibuy_price]
-  end
-
-  def multibuy_quantity
-    @rules[:multibuy_quantity]
-  end
-
-  def unit_price
-    @rules[:unit_price]
-  end
-
-  def multibuy_available?
-    !multibuy_price.nil? && !multibuy_quantity.nil?
+  def discounts
+    @discounts.nil? ? [] : @discounts.map {|d| Discount.for(d) }
   end
 end
 
@@ -37,9 +62,11 @@ class Checkout
       sku, count = _
       item = lookup_item(sku)
 
-      if item.multibuy_available?
-        quotient, modulus = count.divmod(item.multibuy_quantity)
-        total += (quotient * item.multibuy_price) + (modulus * item.unit_price)
+      if item.discounts.any?
+        # do we want to apply all discounts if more than one exists?
+        total += item.discounts.reduce(INITIAL_TOTAL) do |memo, discount|
+          memo += discount.apply(item, count)
+        end
       else
         total += count * item.unit_price
       end
@@ -49,7 +76,9 @@ class Checkout
   private
 
   def lookup_item(sku)
-    CheckoutItem.new(@rules[sku])
+    # { :unit_price => 50.0, :discounts => [ { :type => :multibuy, :options => { ... } } ] }
+    unit_price, discounts = @rules[sku].values_at(:unit_price, :discounts)
+    CheckoutItem.new(sku, unit_price, discounts)
   end
 
   def item_counts
