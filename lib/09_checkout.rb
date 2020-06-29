@@ -10,6 +10,11 @@ class MultibuyDiscount
   end
 end
 
+class NullDiscount
+  def apply
+    item ...
+  end
+end
 class KeyWorkerDiscount
   def initialize(percentage_discount)
     @percentage_discount = percentage_discount
