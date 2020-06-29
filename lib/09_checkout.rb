@@ -11,20 +11,23 @@ class MultibuyDiscount
 end
 
 class KeyWorkerDiscount
-  def initialize
+  def initialize(percentage_discount)
+    @percentage_discount = percentage_discount
   end
 
-  def apply(item)
+  def apply(item, count)
+    (count * item.unit_price) * (@percentage_discount / 100.0)
   end
 end
 
 class Discount
-  # { :type => :multibuy, :options => { :quantity => 3, :price => 130 } }
   def self.for(discount)
     type, options = discount.values_at(:type, :options)
     case type
     when :multibuy
       MultibuyDiscount.new(options[:quantity], options[:price])
+    when :key_worker
+      KeyWorkerDiscount.new(options[:percentage_discount])
     else
       raise 'Unsupported discount type'
     end
@@ -76,7 +79,6 @@ class Checkout
   private
 
   def lookup_item(sku)
-    # { :unit_price => 50.0, :discounts => [ { :type => :multibuy, :options => { ... } } ] }
     unit_price, discounts = @rules[sku].values_at(:unit_price, :discounts)
     CheckoutItem.new(sku, unit_price, discounts)
   end
