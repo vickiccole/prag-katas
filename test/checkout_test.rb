@@ -6,8 +6,7 @@ RULES = {
     { :type => :multibuy, :options => { :quantity => 3, :price => 130 } }
   ] },
   "B" => { :unit_price => 30.0, :discounts => [
-    { :type => :multibuy, :options => { :quantity => 2, :price => 45 } },
-    # { :type => :key_worker, :options => { :percentage_discount => 50 } },
+    { :type => :key_worker, :options => { :percentage_discount => 50 } },
   ] },
   "C" => { :unit_price => 20.0 },
   "D" => { :unit_price => 15.0 }
@@ -23,8 +22,7 @@ class CheckoutTest < Minitest::Test
   def test_totals
     assert_equal(0, price(""))
     assert_equal(50, price("A"))
-    assert_equal(80, price("AB"))
-    assert_equal(95, price("ABB"))
+    assert_equal(65, price("AB"))
     # assert_equal(115, price("CDBA"))
 
     # assert_equal(100, price("AA"))
